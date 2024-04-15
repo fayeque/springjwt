@@ -9,6 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.javatechie.exceptions.JwtTokenExpiredException;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
+    	
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignKey())
@@ -48,9 +51,10 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, UserDetails userDetails) throws Exception {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        System.out.println("username in validate token " + username.substring(0,username.indexOf("/")));
+        return (username.substring(0,username.indexOf("/")).equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 
@@ -64,7 +68,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*30))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*90))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

@@ -12,13 +12,14 @@ import java.util.stream.Collectors;
 
 public class UserInfoUserDetails implements UserDetails {
 
-
+	private Integer id;
     private String name;
     private String password;
     private List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(UserInfo userInfo) {
-        name=userInfo.getName();
+    	id=userInfo.getId();
+        name=userInfo.getEmail();
         password=userInfo.getPassword();
         authorities= Arrays.stream(userInfo.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -39,6 +40,11 @@ public class UserInfoUserDetails implements UserDetails {
     public String getUsername() {
         return name;
     }
+    
+    public Integer getId() {
+        return id;
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {

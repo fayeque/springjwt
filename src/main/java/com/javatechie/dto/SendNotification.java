@@ -1,18 +1,16 @@
 package com.javatechie.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Product {
+public class SendNotification {
+	
+	 public String productURL;
+	 public String productName;
+	 public String productPrice;
 
-    private int productId;
-    private String name;
-    private int qty;
-    private double price;
 }
